@@ -4,7 +4,5 @@ public class Parameter {
 
 	public static final String startDt = "2014-08-30";
 	
-	public static final String A_STRING = "^(match_detail_)\\d{6}$";
-	
-	public static final String B_STRING = "match_detail_";
+	public static final String UID_STRING = "267436";
 }

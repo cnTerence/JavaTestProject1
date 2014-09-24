@@ -1,10 +1,17 @@
 package vargas.dgsd22.common;
 
-public class Url {
+import vargas.dgsd22.prop.ExpertKey;
+import vargas.dgsd22.prop.MatchKey;
+import vargas.dgsd22.prop.PropertyManagerExpert;
+import vargas.dgsd22.prop.PropertyManagerMatch;
 
-	private final static String basic = "";
+public class Url {
 	
-	public static String getBasic(String dt){
-		return basic.replace("${0}", dt);
+	public static String getMatchBasicSite(String dt){
+		return PropertyManagerMatch.getParameter(MatchKey.KEY_BASIC_SITE).replace("${0}", dt);
+	}
+	
+	public static String getExpertSite(String uid){
+		return PropertyManagerExpert.getParameter(ExpertKey.KEY_SITE).replace("${0}", uid);
 	}
 }
