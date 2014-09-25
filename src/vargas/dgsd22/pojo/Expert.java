@@ -1,8 +1,9 @@
 package vargas.dgsd22.pojo;
 
-public class Expert {
+public class Expert{
 
 	private String uid;
+	private String uname;
 	private String date;
 	private String type;
 	private String host;
@@ -51,5 +52,11 @@ public class Expert {
 	}
 	public void setP(String p) {
 		this.p = p;
+	}
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
 	}
 }

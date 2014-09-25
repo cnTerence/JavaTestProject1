@@ -6,4 +6,6 @@ public class ExpertKey {
 	public static final String KEY_RESULT_DIV_CLASS = "resultDivClass";
 	public static final String KEY_WIN_IMG_NAME = "winImgName";
 	public static final String KEY_LOST_IMG_NAME = "lostImgName";
+	public static final String KEY_EXPERT_NAME_DIV_ID = "expertNameDivId";
+	public static final String KEY_EXPERT_NAME_DIV_CLASS = "expertNameDivClass";
 }
