@@ -43,11 +43,11 @@ public class HtmlHelper {
 		return PropertyManagerExpert.getParameter(ExpertKey.KEY_LOST_IMG_NAME);
 	}
 	
-	public static String getExpertNameDivId(){
-		return PropertyManagerExpert.getParameter(ExpertKey.KEY_EXPERT_NAME_DIV_ID);
+	public static String getExpertNameDivClass1(){
+		return PropertyManagerExpert.getParameter(ExpertKey.KEY_EXPERT_NAME_DIV_CLASS1);
 	}
 	
-	public static String getExpertNameDivClass(){
-		return PropertyManagerExpert.getParameter(ExpertKey.KEY_EXPERT_NAME_DIV_CLASS);
+	public static String getExpertNameDivClass2(){
+		return PropertyManagerExpert.getParameter(ExpertKey.KEY_EXPERT_NAME_DIV_CLASS2);
 	}
 }

@@ -1,10 +1,10 @@
 package vargas.dgsd22.fetcher;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -20,20 +20,27 @@ public class ExpertFetcher extends Fetcher {
 		List<Expert> expertList = new ArrayList<Expert>();
 		
 		Map<String, String> expertId = PropertyManagerExpert.getAllExperts();
-		int len1 = expertId.size();
 		int len2;
-		int cnt1;
 		int cnt2;
 		String uid;
 		String uname;
-		for(cnt1 = 0; cnt1 < len1; cnt1++){
-			uid = expertId.get(cnt1);
+		List<String> usedUid = new ArrayList<String>();
+		List<Expert> expertListThisTime = new ArrayList<Expert>();
+		
+		Iterator<String> keySetIterator = expertId.keySet().iterator();  
+		while (keySetIterator.hasNext()) {  
+			uid = keySetIterator.next();
+			
+			//check if it is the duplicate uid
+			if(usedUid.contains(uid)){
+				continue;
+			}
 			
 			Document doc = getDocument(Url.getExpertSite(uid));
 			
 			uname = 
-					doc.getElementById(HtmlHelper.getExpertNameDivId()).
-					getElementsByAttributeValue(HtmlHelper.CLASS, HtmlHelper.getExpertNameDivClass()).
+					doc.getElementsByAttributeValue(HtmlHelper.CLASS, HtmlHelper.getExpertNameDivClass1()).get(0).
+					getElementsByAttributeValue(HtmlHelper.CLASS, HtmlHelper.getExpertNameDivClass2()).
 					get(0).child(0).child(0).text();
 			
 			Element tbl = 
@@ -49,13 +56,15 @@ public class ExpertFetcher extends Fetcher {
 			Expert lastExpert = null;
 			boolean hasFindLastRec = false;
 			
+			expertListThisTime.clear();
 			cnt2 = len2 - 1;
 			for(cnt2 = len2 - 1; cnt2 >= 0; cnt2--){
 				row = tbl.child(cnt2);
 				
-				//if xx is blank, stop
-				String score = row.child(3).child(0).child(0).child(1).text();
-				if(StringUtil.isBlank(score)){
+				//if result is blank, stop
+				//String score = row.child(3).child(0).child(0).child(1).text();	
+				//if(StringUtil.isBlank(score)){
+				if(row.child(5).children().size() == 0){
 					if(expert != null){
 						lastPubRec.put(uid, expert);
 					}
@@ -77,6 +86,8 @@ public class ExpertFetcher extends Fetcher {
 					expert.setResult(false);
 				}
 				
+				expertListThisTime.add(expert);
+				
 				//if last record exists, search
 				lastExpert = lastPubRec.get(uid);
 				if(lastExpert != null && !hasFindLastRec){
@@ -93,6 +104,22 @@ public class ExpertFetcher extends Fetcher {
 					expertList.add(expert);
 				}
 			}
+			
+			//if last record isnot matched, add records that this time get to expert list
+			if(!hasFindLastRec){
+				while(expertListThisTime.size() > 0){
+					
+					if(expertListThisTime.size() == 1){
+						lastPubRec.put(uid, expertListThisTime.get(0));
+					}
+					
+					expertList.add(expertListThisTime.get(0));
+					expertListThisTime.remove(0);
+				}
+			}
+			
+			usedUid.add(uid);
+		
 		}
 		
 		return expertList;
