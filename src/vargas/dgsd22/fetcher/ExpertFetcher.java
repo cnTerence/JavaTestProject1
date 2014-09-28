@@ -102,11 +102,14 @@ public class ExpertFetcher extends Fetcher {
 					continue;
 				}else{
 					expertList.add(expert);
+					if(cnt2 == 0){
+						lastPubRec.put(uid, expert);
+					}
 				}
 			}
 			
-			//if last record isnot matched, add records that this time get to expert list
-			if(!hasFindLastRec){
+			//if last record isnot matched, add records that been fetched this time to expert list
+			if(lastExpert != null && !hasFindLastRec){
 				while(expertListThisTime.size() > 0){
 					
 					if(expertListThisTime.size() == 1){
