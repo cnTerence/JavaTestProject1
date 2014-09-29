@@ -15,7 +15,7 @@ import vargas.dgsd22.prop.PropertyManagerExpert;
 
 public class ExpertFetcher extends Fetcher {
 
-	public List<Expert> getAllPojo(Map<String, Expert> lastPubRec) {
+	public List<Expert> getAllPojo() {
 		
 		List<Expert> expertList = new ArrayList<Expert>();
 		
@@ -25,7 +25,6 @@ public class ExpertFetcher extends Fetcher {
 		String uid;
 		String uname;
 		List<String> usedUid = new ArrayList<String>();
-		List<Expert> expertListThisTime = new ArrayList<Expert>();
 		
 		Iterator<String> keySetIterator = expertId.keySet().iterator();  
 		while (keySetIterator.hasNext()) {  
@@ -53,22 +52,13 @@ public class ExpertFetcher extends Fetcher {
 			
 			Element row = null;
 			Expert expert = null;
-			Expert lastExpert = null;
-			boolean hasFindLastRec = false;
 			
-			expertListThisTime.clear();
 			cnt2 = len2 - 1;
 			for(cnt2 = len2 - 1; cnt2 >= 0; cnt2--){
 				row = tbl.child(cnt2);
 				
-				//if result is blank, stop
-				//String score = row.child(3).child(0).child(0).child(1).text();	
-				//if(StringUtil.isBlank(score)){
 				if(row.child(5).children().size() == 0){
-					if(expert != null){
-						lastPubRec.put(uid, expert);
-					}
-					break;
+					continue;
 				}
 				
 				expert = new Expert();
@@ -86,39 +76,7 @@ public class ExpertFetcher extends Fetcher {
 					expert.setResult(false);
 				}
 				
-				expertListThisTime.add(expert);
-				
-				//if last record exists, search
-				lastExpert = lastPubRec.get(uid);
-				if(lastExpert != null && !hasFindLastRec){
-					if(lastExpert.getType().equals(expert.getType()) && 
-							lastExpert.getDate().equals(expert.getDate()) && 
-							lastExpert.getHost().equals(expert.getHost()) && 
-							lastExpert.getGuest().equals(expert.getGuest())){
-						
-						hasFindLastRec = true;
-					}
-					
-					continue;
-				}else{
-					expertList.add(expert);
-					if(cnt2 == 0){
-						lastPubRec.put(uid, expert);
-					}
-				}
-			}
-			
-			//if last record isnot matched, add records that been fetched this time to expert list
-			if(lastExpert != null && !hasFindLastRec){
-				while(expertListThisTime.size() > 0){
-					
-					if(expertListThisTime.size() == 1){
-						lastPubRec.put(uid, expertListThisTime.get(0));
-					}
-					
-					expertList.add(expertListThisTime.get(0));
-					expertListThisTime.remove(0);
-				}
+				expertList.add(expert);
 			}
 			
 			usedUid.add(uid);
