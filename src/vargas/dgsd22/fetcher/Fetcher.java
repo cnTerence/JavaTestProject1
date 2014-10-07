@@ -14,6 +14,7 @@ public abstract class Fetcher {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("url can not be reached. " + url);
 		}
 		return doc;
 	}
